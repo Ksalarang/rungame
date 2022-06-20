@@ -26,6 +26,7 @@ public class PlayScreen implements Screen {
     private Sprite background;
     private TextButtonStyle buttonStyle;
     private TextButton exitButton;
+    private Dino dino;
 
     public PlayScreen(RunGame game) {
         this.game = game;
@@ -44,7 +45,10 @@ public class PlayScreen implements Screen {
 
         setupExitButton();
 
+        dino = new Dino(80, 180);
+
         stage.addActor(exitButton);
+        stage.addActor(dino);
     }
 
     @Override
@@ -57,6 +61,8 @@ public class PlayScreen implements Screen {
 
         stage.act();
         stage.draw();
+
+        handleInput();
     }
 
     @Override
@@ -69,6 +75,13 @@ public class PlayScreen implements Screen {
     public void dispose() {
         stage.dispose();
         background.getTexture().dispose();
+        dino.dispose();
+    }
+
+    private void handleInput() {
+        if (Gdx.input.isTouched()) {
+            dino.jump();
+        }
     }
 
     private void setupExitButton() {
