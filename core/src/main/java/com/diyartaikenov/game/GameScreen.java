@@ -17,8 +17,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-//fixme rename to GameScreen
-public class PlayScreen implements Screen {
+public class GameScreen implements Screen {
     private final RunGame game;
     private OrthographicCamera camera;
     private FitViewport viewport;
@@ -29,7 +28,7 @@ public class PlayScreen implements Screen {
     private TextButton exitButton;
     private Dino dino;
 
-    public PlayScreen(RunGame game) {
+    public GameScreen(RunGame game) {
         this.game = game;
         camera = new OrthographicCamera(WIDTH, HEIGHT);
         camera.position.set(WIDTH / 2f, HEIGHT / 2f, 0);
