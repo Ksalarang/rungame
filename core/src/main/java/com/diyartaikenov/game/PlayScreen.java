@@ -49,7 +49,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.DARK_GRAY);
+        ScreenUtils.clear(Color.BLACK);
 
         game.batch.begin();
         background.draw(game.batch);
