@@ -1,5 +1,7 @@
 package com.diyartaikenov.game;
 
+import static com.diyartaikenov.game.GameScreen.GROUND_HEIGHT;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -16,7 +18,6 @@ public class Dino extends Actor implements Disposable {
 
     private Vector2 position;
     private Vector2 velocity;
-    private int groundHeight;
 
     private Animation<Texture> runAnimation;
     private Texture currentFrame;
@@ -29,7 +30,6 @@ public class Dino extends Actor implements Disposable {
     public Dino(int x, int y) {
         position = new Vector2(x, y);
         velocity = new Vector2(0, 0);
-        groundHeight = y;
 
         Array<Texture> frames = new Array<>();
         for (int i = 1; i <= RUNNING_FRAMES_AMOUNT; i++) {
@@ -72,19 +72,19 @@ public class Dino extends Actor implements Disposable {
     }
 
     private void calculatePosition(float deltaTime) {
-        if (position.y > groundHeight) {
+        if (position.y > GROUND_HEIGHT) {
             velocity.add(0, GRAVITY);
         }
         velocity.scl(deltaTime);
         position.add(0, velocity.y);
-        if (position.y < groundHeight) {
-            position.y = groundHeight;
+        if (position.y < GROUND_HEIGHT) {
+            position.y = GROUND_HEIGHT;
         }
         velocity.scl(1 / deltaTime);
     }
 
     private void updateState() {
-        if (position.y == groundHeight) {
+        if (position.y == GROUND_HEIGHT) {
             state = State.RUNNING;
         } else if (velocity.y > 0) {
             state = State.JUMPING;

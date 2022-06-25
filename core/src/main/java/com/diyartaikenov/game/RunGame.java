@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class RunGame extends Game {
-	// The aspect ratio is almost the same as in 750*1334
+	// The aspect ratio is almost the same as in 750x1334
 	public static int WIDTH = 450;
 	public static int HEIGHT = 800;
 

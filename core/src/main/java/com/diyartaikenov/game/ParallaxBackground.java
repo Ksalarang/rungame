@@ -44,6 +44,10 @@ public class ParallaxBackground extends Group implements Disposable {
         }
     }
 
+    public float getSpeed() {
+        return speed;
+    }
+
     public void setSpeed(float speed) {
         this.speed = speed;
     }

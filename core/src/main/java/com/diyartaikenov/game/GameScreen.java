@@ -9,15 +9,20 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class GameScreen implements Screen {
+    static int GROUND_HEIGHT = 180;
+    static int SECOND_IN_NANOS = 2_000_000_000;
+
     private final RunGame game;
     private OrthographicCamera camera;
     private FitViewport viewport;
@@ -27,6 +32,10 @@ public class GameScreen implements Screen {
     private TextButtonStyle buttonStyle;
     private TextButton exitButton;
     private Dino dino;
+    private Array<Texture> cactusTextures = new Array<>();
+
+    private int dinoX = 80;
+    private long lastCactusSpawnTime;
 
     public GameScreen(RunGame game) {
         this.game = game;
@@ -35,7 +44,6 @@ public class GameScreen implements Screen {
         viewport = new FitViewport(WIDTH, HEIGHT, camera);
         viewport.apply();
         // It's important to supply viewport and sprite batch to Stage constructor.
-        // Everything works magically after that :)
         stage = new Stage(viewport, game.batch);
         Gdx.input.setInputProcessor(stage);
 
@@ -55,16 +63,28 @@ public class GameScreen implements Screen {
 
         setupExitButton();
 
-        dino = new Dino(80, 180);
+        dino = new Dino(dinoX, GROUND_HEIGHT);
+
+        // Create cacti textures.
+        for (int i = 1; i <= 3; i++) {
+            Texture texture = new Texture(Gdx.files.internal("cacti/cactus" + i + ".png"));
+            cactusTextures.add(texture);
+        }
 
         stage.addActor(background);
         stage.addActor(exitButton);
         stage.addActor(dino);
+        spawnCactus();
     }
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
+
+        // Check if we need to spawn a new cactus.
+        if (TimeUtils.nanoTime() - lastCactusSpawnTime > SECOND_IN_NANOS) {
+            spawnCactus();
+        }
 
         stage.act();
         stage.draw();
@@ -83,6 +103,9 @@ public class GameScreen implements Screen {
         stage.dispose();
         background.dispose();
         dino.dispose();
+        for (Texture t: cactusTextures) {
+            t.dispose();
+        }
     }
 
     private void handleInput() {
@@ -105,6 +128,15 @@ public class GameScreen implements Screen {
                 return true;
             }
         });
+    }
+
+    private void spawnCactus() {
+        int randomIndex = MathUtils.random(0, cactusTextures.size - 1);
+        Texture texture = cactusTextures.get(randomIndex);
+        int cactusHeight = MathUtils.random(50, 80);
+        Cactus cactus = new Cactus(texture, WIDTH, GROUND_HEIGHT, cactusHeight);
+        stage.addActor(cactus);
+        lastCactusSpawnTime = TimeUtils.nanoTime();
     }
 
     //region Empty methods
