@@ -49,6 +49,7 @@ public class MainMenuScreen implements Screen {
         setupPlayButton();
         setupExitButton();
 
+        // Show player score if it was persisted in preferences before.
         int playerScore = game.preferences.getInteger(PREF_PLAYER_SCORE);
         if (playerScore > 0) {
             Label.LabelStyle labelStyle = new Label.LabelStyle();

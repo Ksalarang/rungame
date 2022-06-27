@@ -7,6 +7,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.diyartaikenov.game.screens.MainMenuScreen;
 
+/**
+ * This is my first attempt at creating cross-platform games with libGDX.
+ * Please keep it in mind while evaluating my project.
+ */
 public class RunGame extends Game {
 	// The aspect ratio is almost the same as in 750x1334
 	public static int WIDTH = 450;
