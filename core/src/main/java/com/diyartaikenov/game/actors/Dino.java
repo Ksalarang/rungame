@@ -31,6 +31,7 @@ public class Dino extends Actor implements Disposable {
     private float frameAspectRatio;
     private float stateTime;
     private State state = State.RUNNING;
+    private boolean isMoving = true;
 
     public Dino(int x, int y) {
         setPosition(x, y);
@@ -59,9 +60,11 @@ public class Dino extends Actor implements Disposable {
     @Override
     public void act(float delta) {
         super.act(delta);
-        calculatePosition(delta);
-        updateState();
-        updateCurrentFrame(delta);
+        if (isMoving) {
+            calculatePosition(delta);
+            updateState();
+            updateCurrentFrame(delta);
+        }
     }
 
     @Override
@@ -82,6 +85,10 @@ public class Dino extends Actor implements Disposable {
         if (state != State.JUMPING) {
             velocity.y = 300;
         }
+    }
+
+    public void setMoving(boolean isMoving) {
+        this.isMoving = isMoving;
     }
 
     public Rectangle getBounds() {

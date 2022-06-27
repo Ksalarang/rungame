@@ -2,6 +2,7 @@ package com.diyartaikenov.game.screens;
 
 import static com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import static com.diyartaikenov.game.RunGame.HEIGHT;
+import static com.diyartaikenov.game.RunGame.PREF_PLAYER_POINTS;
 import static com.diyartaikenov.game.RunGame.WIDTH;
 
 import com.badlogic.gdx.Gdx;
@@ -13,11 +14,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.diyartaikenov.game.RunGame;
-import com.diyartaikenov.game.screens.GameScreen;
 
 public class MainMenuScreen implements Screen {
     private final RunGame game;
@@ -47,6 +48,18 @@ public class MainMenuScreen implements Screen {
 
         setupPlayButton();
         setupExitButton();
+
+        int playerPoints = game.preferences.getInteger(PREF_PLAYER_POINTS);
+        if (playerPoints > 0) {
+            Label.LabelStyle labelStyle = new Label.LabelStyle();
+            labelStyle.font = game.font;
+            Label pointsLabel = new Label("Points " + playerPoints, labelStyle);
+            pointsLabel.setPosition(
+                    WIDTH / 2f - pointsLabel.getWidth() / 2,
+                    playButton.getY() + pointsLabel.getHeight() * 2
+                    );
+            stage.addActor(pointsLabel);
+        }
 
         stage.addActor(playButton);
         stage.addActor(exitButton);

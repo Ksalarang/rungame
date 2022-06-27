@@ -10,6 +10,7 @@ public class Cactus extends Actor {
     private Sprite sprite;
     private final float aspectRatio;
     private Rectangle bounds;
+    private boolean isMoving = true;
 
     public Cactus(Texture texture, int x, int y, int height) {
         sprite = new Sprite(texture);
@@ -22,7 +23,9 @@ public class Cactus extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
-        sprite.translateX(-170 * delta);
+        if (isMoving) {
+            sprite.translateX(-170 * delta);
+        }
     }
 
     @Override
@@ -40,5 +43,9 @@ public class Cactus extends Actor {
     @Override
     public boolean isVisible() {
         return sprite.getX() + sprite.getWidth() >= 0;
+    }
+
+    public void setMoving(boolean isMoving) {
+        this.isMoving = isMoving;
     }
 }
