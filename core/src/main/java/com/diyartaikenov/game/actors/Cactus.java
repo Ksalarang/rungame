@@ -1,5 +1,7 @@
 package com.diyartaikenov.game.actors;
 
+import static com.diyartaikenov.game.screens.GameScreen.FACTOR;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -16,8 +18,10 @@ public class Cactus extends Actor {
         sprite = new Sprite(texture);
         aspectRatio = sprite.getWidth() / sprite.getHeight();
         sprite.setBounds(x, y, height * aspectRatio, height);
-        float f = 2f;
-        bounds = new Rectangle(x, y, sprite.getWidth() / f, sprite.getHeight() / f);
+        bounds = new Rectangle(x, y,
+                sprite.getWidth() / FACTOR,
+                sprite.getHeight() / FACTOR
+        );
     }
 
     @Override
@@ -33,16 +37,16 @@ public class Cactus extends Actor {
         sprite.draw(batch, parentAlpha);
     }
 
+    @Override
+    public boolean isVisible() {
+        return sprite.getX() + sprite.getWidth() >= 0;
+    }
+
     public Rectangle getBounds() {
         float x = sprite.getX() + (sprite.getWidth() - bounds.getWidth()) / 2;
         float y = sprite.getY() + (sprite.getHeight() - bounds.getHeight()) / 2;
         bounds.setPosition(x, y);
         return bounds;
-    }
-
-    @Override
-    public boolean isVisible() {
-        return sprite.getX() + sprite.getWidth() >= 0;
     }
 
     public void setMoving(boolean isMoving) {

@@ -32,7 +32,12 @@ import java.util.Iterator;
 
 public class GameScreen implements Screen {
     public static int GROUND_HEIGHT = 180;
-    public static int SECOND_IN_NANOS = 1_000_000_000;
+    public static int HALF_SECOND_IN_NANOS = 500_000_000;
+    /**
+     * Decrease colliding actors' bounds by this factor so overlapping would happen
+     * when the actors are closer to each other.
+     */
+    public static float FACTOR = 1.5f;
 
     private final RunGame game;
     private OrthographicCamera camera;
@@ -54,6 +59,7 @@ public class GameScreen implements Screen {
 
     private int dinoX = 80;
     private long lastCactusSpawnTime;
+    private long randomSeconds;
 
     public GameScreen(RunGame game) {
         this.game = game;
@@ -102,7 +108,7 @@ public class GameScreen implements Screen {
         Timer.Task task = new Timer.Task() {
             @Override
             public void run() {
-                playerScore++;
+                scoreLabel.setText("Score: " + ++playerScore);
             }
         };
         timer.scheduleTask(task, 1, 1);
@@ -115,11 +121,10 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(Color.BLACK);
 
         // Check if we need to spawn a new cactus.
-        if (TimeUtils.nanoTime() - lastCactusSpawnTime > SECOND_IN_NANOS * 2L
-        && isGameRunning) {
+        if (isGameRunning &&
+                TimeUtils.nanoTime() - lastCactusSpawnTime > HALF_SECOND_IN_NANOS * randomSeconds) {
             spawnCactus();
         }
-        scoreLabel.setText("Score: " + playerScore);
 
         stage.act();
         stage.draw();
@@ -191,6 +196,7 @@ public class GameScreen implements Screen {
         stage.addActor(cactus);
         dino.setZIndex(stage.getActors().size);
         cacti.addLast(cactus);
+        randomSeconds = MathUtils.random(2L, 5L);
         lastCactusSpawnTime = TimeUtils.nanoTime();
     }
 

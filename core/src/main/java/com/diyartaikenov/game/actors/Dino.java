@@ -1,5 +1,6 @@
 package com.diyartaikenov.game.actors;
 
+import static com.diyartaikenov.game.screens.GameScreen.FACTOR;
 import static com.diyartaikenov.game.screens.GameScreen.GROUND_HEIGHT;
 
 import com.badlogic.gdx.Gdx;
@@ -22,8 +23,8 @@ public class Dino extends Actor implements Disposable {
      * Used to check for overlapping with another {@link Rectangle}.
      */
     private Rectangle bounds;
-    private float boundsOffsetX;
-    private float boundsOffsetY;
+    private float boundXOffset;
+    private float boundYOffset;
 
     private Animation<Texture> runAnimation;
     private Texture currentFrame;
@@ -49,12 +50,9 @@ public class Dino extends Actor implements Disposable {
         setWidth(HEIGHT * frameAspectRatio);
         setHeight(HEIGHT);
 
-        // Decrease the rectangle by factor f so overlapping would happen
-        // when Dino and the cactus are closer to each other.
-        float f = 2f;
-        bounds = new Rectangle(x, y, getWidth() / f, getHeight() / f);
-        boundsOffsetX = (getWidth() - bounds.getWidth()) / 2;
-        boundsOffsetY = (getHeight() - bounds.getHeight()) / 2;
+        bounds = new Rectangle(x, y, getWidth() / FACTOR, getHeight() / FACTOR);
+        boundXOffset = (getWidth() - bounds.getWidth()) / 2;
+        boundYOffset = (getHeight() - bounds.getHeight()) / 2;
     }
 
     @Override
@@ -92,8 +90,8 @@ public class Dino extends Actor implements Disposable {
     }
 
     public Rectangle getBounds() {
-        float x = getX() + boundsOffsetX;
-        float y = getY() + boundsOffsetX;
+        float x = getX() + boundXOffset;
+        float y = getY() + boundYOffset;
         bounds.setPosition(x, y);
         return bounds;
     }
