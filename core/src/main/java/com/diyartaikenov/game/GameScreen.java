@@ -103,8 +103,8 @@ public class GameScreen implements Screen {
                 next.addAction(Actions.removeActor());
                 iterator.remove();
             } else if (dino.getBounds().overlaps(next.getBounds())) {
-                System.out.println("overlap");
-                // todo: finish game
+                game.setScreen(new GameOverScreen(game, background));
+                dispose();
                 break;
             }
         }
@@ -119,7 +119,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        background.dispose();
         dino.dispose();
         for (Texture t: cactusTextures) {
             t.dispose();
