@@ -15,15 +15,14 @@ public class Cactus extends Actor {
         sprite = new Sprite(texture);
         aspectRatio = sprite.getWidth() / sprite.getHeight();
         sprite.setBounds(x, y, height * aspectRatio, height);
-        bounds = new Rectangle(x, y, (int) sprite.getWidth(), (int) sprite.getHeight());
+        float f = 2f;
+        bounds = new Rectangle(x, y, sprite.getWidth() / f, sprite.getHeight() / f);
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-
         sprite.translateX(-170 * delta);
-        bounds.x = (int) sprite.getX();
     }
 
     @Override
@@ -32,6 +31,9 @@ public class Cactus extends Actor {
     }
 
     public Rectangle getBounds() {
+        float x = sprite.getX() + (sprite.getWidth() - bounds.getWidth()) / 2;
+        float y = sprite.getY() + (sprite.getHeight() - bounds.getHeight()) / 2;
+        bounds.setPosition(x, y);
         return bounds;
     }
 

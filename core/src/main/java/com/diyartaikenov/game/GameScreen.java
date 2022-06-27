@@ -103,6 +103,7 @@ public class GameScreen implements Screen {
                 next.addAction(Actions.removeActor());
                 iterator.remove();
             } else if (dino.getBounds().overlaps(next.getBounds())) {
+                System.out.println("overlap");
                 // todo: finish game
                 break;
             }

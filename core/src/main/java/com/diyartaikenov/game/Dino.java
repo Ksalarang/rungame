@@ -17,13 +17,13 @@ public class Dino extends Actor implements Disposable {
     private final int RUNNING_FRAMES_AMOUNT = 8;
     private final int HEIGHT = 50;
 
-    private Vector2 position;
     private Vector2 velocity;
     /**
      * Used to check for overlapping with another {@link Rectangle}.
-     * Update its x and y whenever {@link Dino#position}'s x and y change.
      */
     private Rectangle bounds;
+    private float boundsOffsetX;
+    private float boundsOffsetY;
 
     private Animation<Texture> runAnimation;
     private Texture currentFrame;
@@ -33,7 +33,7 @@ public class Dino extends Actor implements Disposable {
     private State state = State.RUNNING;
 
     public Dino(int x, int y) {
-        position = new Vector2(x, y);
+        setPosition(x, y);
         velocity = new Vector2(0, 0);
 
         Array<Texture> frames = new Array<>();
@@ -42,13 +42,18 @@ public class Dino extends Actor implements Disposable {
         }
         runAnimation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
         currentFrame = runAnimation.getKeyFrame(stateTime);
-        frameAspectRatio = (float) currentFrame.getWidth() / (float) currentFrame.getHeight();
         jumpFrame = new Texture(Gdx.files.internal("jump.png"));
+
+        frameAspectRatio = (float) currentFrame.getWidth() / (float) currentFrame.getHeight();
+        setWidth(HEIGHT * frameAspectRatio);
+        setHeight(HEIGHT);
 
         // Decrease the rectangle by factor f so overlapping would happen
         // when Dino and the cactus are closer to each other.
-        float f = 1.2f;
-        bounds = new Rectangle(x, y, HEIGHT * frameAspectRatio / f, HEIGHT / f);
+        float f = 2f;
+        bounds = new Rectangle(x, y, getWidth() / f, getHeight() / f);
+        boundsOffsetX = (getWidth() - bounds.getWidth()) / 2;
+        boundsOffsetY = (getHeight() - bounds.getHeight()) / 2;
     }
 
     @Override
@@ -62,9 +67,9 @@ public class Dino extends Actor implements Disposable {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.draw(currentFrame,
-                position.x, position.y,
-                HEIGHT * frameAspectRatio,
-                HEIGHT
+                getX(), getY(),
+                getWidth(),
+                getHeight()
         );
     }
 
@@ -80,29 +85,29 @@ public class Dino extends Actor implements Disposable {
     }
 
     public Rectangle getBounds() {
+        float x = getX() + boundsOffsetX;
+        float y = getY() + boundsOffsetX;
+        bounds.setPosition(x, y);
         return bounds;
     }
 
     private void calculatePosition(float deltaTime) {
-        if (position.y > GROUND_HEIGHT) {
+        if (getY() > GROUND_HEIGHT) {
             velocity.add(0, GRAVITY);
-            bounds.y += GRAVITY;
         }
         velocity.scl(deltaTime);
-        position.add(0, velocity.y);
-        bounds.y += velocity.y;
-
-        if (position.y < GROUND_HEIGHT) {
-            position.y = GROUND_HEIGHT;
-            bounds.y = GROUND_HEIGHT;
-        }
+        moveBy(0, velocity.y);
         velocity.scl(1 / deltaTime);
+
+        if (getY() < GROUND_HEIGHT) {
+            setY(GROUND_HEIGHT);
+        }
     }
 
     private void updateState() {
-        if (position.y == GROUND_HEIGHT) {
+        if (getY() == GROUND_HEIGHT) {
             state = State.RUNNING;
-        } else if (position.y > GROUND_HEIGHT) {
+        } else if (getY() > GROUND_HEIGHT) {
             state = State.JUMPING;
         }
     }
