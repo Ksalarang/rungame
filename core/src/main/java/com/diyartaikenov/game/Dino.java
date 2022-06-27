@@ -19,12 +19,15 @@ public class Dino extends Actor implements Disposable {
 
     private Vector2 position;
     private Vector2 velocity;
+    /**
+     * Used to check for overlapping with another {@link Rectangle}.
+     * Update its x and y whenever {@link Dino#position}'s x and y change.
+     */
     private Rectangle bounds;
 
     private Animation<Texture> runAnimation;
     private Texture currentFrame;
     private Texture jumpFrame;
-    private Texture landFrame;
     private float frameAspectRatio;
     private float stateTime;
     private State state = State.RUNNING;
@@ -41,7 +44,6 @@ public class Dino extends Actor implements Disposable {
         currentFrame = runAnimation.getKeyFrame(stateTime);
         frameAspectRatio = (float) currentFrame.getWidth() / (float) currentFrame.getHeight();
         jumpFrame = new Texture(Gdx.files.internal("jump.png"));
-        landFrame = new Texture(Gdx.files.internal("jump.png"));
 
         // Decrease the rectangle by factor f so overlapping would happen
         // when Dino and the cactus are closer to each other.
@@ -69,11 +71,10 @@ public class Dino extends Actor implements Disposable {
     public void dispose() {
         // TODO: 20.06.2022 dispose run animation frames
         jumpFrame.dispose();
-        landFrame.dispose();
     }
 
     public void jump() {
-        if (state != State.JUMPING && state != State.LANDING) {
+        if (state != State.JUMPING) {
             velocity.y = 300;
         }
     }
@@ -101,10 +102,8 @@ public class Dino extends Actor implements Disposable {
     private void updateState() {
         if (position.y == GROUND_HEIGHT) {
             state = State.RUNNING;
-        } else if (velocity.y > 0) {
+        } else if (position.y > GROUND_HEIGHT) {
             state = State.JUMPING;
-        } else if (velocity.y < 0) {
-            state = State.LANDING;
         }
     }
 
@@ -114,11 +113,8 @@ public class Dino extends Actor implements Disposable {
             currentFrame = runAnimation.getKeyFrame(stateTime);
         } else if (state == State.JUMPING) {
             currentFrame = jumpFrame;
-        } else if (state == State.LANDING) {
-//            currentFrame = landFrame;
         }
     }
 
-    // todo: remove landing state
-    private enum State { RUNNING, JUMPING, LANDING, }
+    private enum State { RUNNING, JUMPING, }
 }
