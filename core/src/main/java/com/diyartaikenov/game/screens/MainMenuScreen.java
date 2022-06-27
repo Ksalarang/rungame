@@ -2,7 +2,7 @@ package com.diyartaikenov.game.screens;
 
 import static com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import static com.diyartaikenov.game.RunGame.HEIGHT;
-import static com.diyartaikenov.game.RunGame.PREF_PLAYER_POINTS;
+import static com.diyartaikenov.game.RunGame.PREF_PLAYER_SCORE;
 import static com.diyartaikenov.game.RunGame.WIDTH;
 
 import com.badlogic.gdx.Gdx;
@@ -49,16 +49,16 @@ public class MainMenuScreen implements Screen {
         setupPlayButton();
         setupExitButton();
 
-        int playerPoints = game.preferences.getInteger(PREF_PLAYER_POINTS);
-        if (playerPoints > 0) {
+        int playerScore = game.preferences.getInteger(PREF_PLAYER_SCORE);
+        if (playerScore > 0) {
             Label.LabelStyle labelStyle = new Label.LabelStyle();
             labelStyle.font = game.font;
-            Label pointsLabel = new Label("Points " + playerPoints, labelStyle);
-            pointsLabel.setPosition(
-                    WIDTH / 2f - pointsLabel.getWidth() / 2,
-                    playButton.getY() + pointsLabel.getHeight() * 2
+            Label scoreLabel = new Label("Points " + playerScore, labelStyle);
+            scoreLabel.setPosition(
+                    WIDTH / 2f - scoreLabel.getWidth() / 2,
+                    playButton.getY() + scoreLabel.getHeight() * 2
                     );
-            stage.addActor(pointsLabel);
+            stage.addActor(scoreLabel);
         }
 
         stage.addActor(playButton);

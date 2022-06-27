@@ -11,7 +11,7 @@ public class RunGame extends Game {
 	// The aspect ratio is almost the same as in 750x1334
 	public static int WIDTH = 450;
 	public static int HEIGHT = 800;
-	public static String PREF_PLAYER_POINTS = "playerPoints";
+	public static String PREF_PLAYER_SCORE = "playerPoints";
 
 	public SpriteBatch batch;
 	public BitmapFont font;

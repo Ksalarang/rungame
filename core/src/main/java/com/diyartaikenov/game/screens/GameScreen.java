@@ -2,11 +2,10 @@ package com.diyartaikenov.game.screens;
 
 import static com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import static com.diyartaikenov.game.RunGame.HEIGHT;
-import static com.diyartaikenov.game.RunGame.PREF_PLAYER_POINTS;
+import static com.diyartaikenov.game.RunGame.PREF_PLAYER_SCORE;
 import static com.diyartaikenov.game.RunGame.WIDTH;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -40,14 +39,14 @@ public class GameScreen implements Screen {
     private FitViewport viewport;
     private Stage stage;
     private Timer timer;
-    private int points;
+    private int playerScore;
     private boolean isGameRunning;
 
     private ParallaxBackground background;
     private TextButtonStyle buttonStyle;
     private Label.LabelStyle labelStyle;
     private TextButton exitButton;
-    private Label pointsLabel;
+    private Label scoreLabel;
 
     private Dino dino;
     private Array<Texture> cactusTextures = new Array<>();
@@ -83,7 +82,7 @@ public class GameScreen implements Screen {
         labelStyle.font = game.font;
 
         exitButton = createExitButton("[X]");
-        setupLabels(labelStyle);
+        setupScoreLabel(labelStyle);
 
         dino = new Dino(dinoX, GROUND_HEIGHT);
 
@@ -94,7 +93,7 @@ public class GameScreen implements Screen {
         }
 
         stage.addActor(background);
-        stage.addActor(pointsLabel);
+        stage.addActor(scoreLabel);
         stage.addActor(exitButton);
         stage.addActor(dino);
         spawnCactus();
@@ -103,10 +102,10 @@ public class GameScreen implements Screen {
         Timer.Task task = new Timer.Task() {
             @Override
             public void run() {
-                points++;
+                playerScore++;
             }
         };
-        timer.scheduleTask(task, 0, 1);
+        timer.scheduleTask(task, 1, 1);
 
         isGameRunning = true;
     }
@@ -120,7 +119,7 @@ public class GameScreen implements Screen {
         && isGameRunning) {
             spawnCactus();
         }
-        pointsLabel.setText("Points: " + points);
+        scoreLabel.setText("Score: " + playerScore);
 
         stage.act();
         stage.draw();
@@ -179,9 +178,9 @@ public class GameScreen implements Screen {
         return exitButton;
     }
 
-    private void setupLabels(Label.LabelStyle labelStyle) {
-        pointsLabel = new Label("Points: 0", labelStyle);
-        pointsLabel.setPosition(0, HEIGHT - pointsLabel.getHeight());
+    private void setupScoreLabel(Label.LabelStyle labelStyle) {
+        scoreLabel = new Label("Score: 0", labelStyle);
+        scoreLabel.setPosition(0, HEIGHT - scoreLabel.getHeight());
     }
 
     private void spawnCactus() {
@@ -216,15 +215,15 @@ public class GameScreen implements Screen {
         );
         stage.addActor(gameOverLabel);
 
-        pointsLabel.setPosition(
-                WIDTH / 2f - pointsLabel.getWidth() / 2,
-                gameOverLabel.getY() - pointsLabel.getHeight() * 2
+        scoreLabel.setPosition(
+                WIDTH / 2f - scoreLabel.getWidth() / 2,
+                gameOverLabel.getY() - scoreLabel.getHeight() * 2
         );
 
         TextButton restartButton = createRestartButton();
         restartButton.setPosition(
                 WIDTH / 2f - restartButton.getWidth() / 2,
-                pointsLabel.getY() - restartButton.getHeight() * 2
+                scoreLabel.getY() - restartButton.getHeight() * 2
         );
         stage.addActor(restartButton);
 
@@ -237,9 +236,9 @@ public class GameScreen implements Screen {
     }
 
     private void saveProgress() {
-        int oldPoints = game.preferences.getInteger(PREF_PLAYER_POINTS);
-        if (points > oldPoints) {
-            game.preferences.putInteger(PREF_PLAYER_POINTS, points);
+        int oldScore = game.preferences.getInteger(PREF_PLAYER_SCORE);
+        if (playerScore > oldScore) {
+            game.preferences.putInteger(PREF_PLAYER_SCORE, playerScore);
             game.preferences.flush();
         }
     }
