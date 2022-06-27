@@ -10,6 +10,10 @@ import com.diyartaikenov.game.screens.MainMenuScreen;
 /**
  * This is my first attempt at creating cross-platform games with libGDX.
  * Please keep it in mind while evaluating my project.
+ *
+ * I didn't manage to implement one feature - speed increase through time.
+ * Also background and cacti move with different speeds.
+ * There are some input related bugs, too.
  */
 public class RunGame extends Game {
 	// The aspect ratio is almost the same as in 750x1334
