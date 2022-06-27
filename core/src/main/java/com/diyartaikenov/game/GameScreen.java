@@ -13,11 +13,15 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Queue;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import java.util.Iterator;
 
 public class GameScreen implements Screen {
     static int GROUND_HEIGHT = 180;
@@ -33,6 +37,7 @@ public class GameScreen implements Screen {
     private TextButton exitButton;
     private Dino dino;
     private Array<Texture> cactusTextures = new Array<>();
+    private Queue<Cactus> cacti = new Queue<>();
 
     private int dinoX = 80;
     private long lastCactusSpawnTime;
@@ -90,6 +95,18 @@ public class GameScreen implements Screen {
         stage.draw();
 
         handleInput();
+
+        Iterator<Cactus> iterator = cacti.iterator();
+        while (iterator.hasNext()) {
+            Cactus next = iterator.next();
+            if (!next.isVisible()) {
+                next.addAction(Actions.removeActor());
+                iterator.remove();
+            } else if (dino.getBounds().overlaps(next.getBounds())) {
+                // todo: finish game
+                break;
+            }
+        }
     }
 
     @Override
@@ -133,9 +150,10 @@ public class GameScreen implements Screen {
     private void spawnCactus() {
         int randomIndex = MathUtils.random(0, cactusTextures.size - 1);
         Texture texture = cactusTextures.get(randomIndex);
-        int cactusHeight = MathUtils.random(50, 80);
+        int cactusHeight = MathUtils.random(50, 70);
         Cactus cactus = new Cactus(texture, WIDTH, GROUND_HEIGHT, cactusHeight);
         stage.addActor(cactus);
+        cacti.addLast(cactus);
         lastCactusSpawnTime = TimeUtils.nanoTime();
     }
 

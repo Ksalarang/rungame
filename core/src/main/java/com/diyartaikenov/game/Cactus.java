@@ -3,9 +3,8 @@ package com.diyartaikenov.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-
-import java.awt.Rectangle;
 
 public class Cactus extends Actor {
     private Sprite sprite;
@@ -25,11 +24,6 @@ public class Cactus extends Actor {
 
         sprite.translateX(-170 * delta);
         bounds.x = (int) sprite.getX();
-
-        // Remove from stage if moved off screen.
-        if (sprite.getX() + sprite.getWidth() < 0) {
-            remove();
-        }
     }
 
     @Override
@@ -37,14 +31,12 @@ public class Cactus extends Actor {
         sprite.draw(batch, parentAlpha);
     }
 
-    @Override
-    public void setPosition(float x, float y) {
-        sprite.setPosition(x, y);
-        bounds.x = (int) x;
-        bounds.y = (int) y;
-    }
-
     public Rectangle getBounds() {
         return bounds;
+    }
+
+    @Override
+    public boolean isVisible() {
+        return sprite.getX() + sprite.getWidth() >= 0;
     }
 }

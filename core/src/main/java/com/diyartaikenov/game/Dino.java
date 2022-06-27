@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
@@ -18,6 +19,7 @@ public class Dino extends Actor implements Disposable {
 
     private Vector2 position;
     private Vector2 velocity;
+    private Rectangle bounds;
 
     private Animation<Texture> runAnimation;
     private Texture currentFrame;
@@ -39,7 +41,12 @@ public class Dino extends Actor implements Disposable {
         currentFrame = runAnimation.getKeyFrame(stateTime);
         frameAspectRatio = (float) currentFrame.getWidth() / (float) currentFrame.getHeight();
         jumpFrame = new Texture(Gdx.files.internal("jump.png"));
-        landFrame = new Texture(Gdx.files.internal("land.png"));
+        landFrame = new Texture(Gdx.files.internal("jump.png"));
+
+        // Decrease the rectangle by factor f so overlapping would happen
+        // when Dino and the cactus are closer to each other.
+        float f = 1.2f;
+        bounds = new Rectangle(x, y, HEIGHT * frameAspectRatio / f, HEIGHT / f);
     }
 
     @Override
@@ -71,14 +78,22 @@ public class Dino extends Actor implements Disposable {
         }
     }
 
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
     private void calculatePosition(float deltaTime) {
         if (position.y > GROUND_HEIGHT) {
             velocity.add(0, GRAVITY);
+            bounds.y += GRAVITY;
         }
         velocity.scl(deltaTime);
         position.add(0, velocity.y);
+        bounds.y += velocity.y;
+
         if (position.y < GROUND_HEIGHT) {
             position.y = GROUND_HEIGHT;
+            bounds.y = GROUND_HEIGHT;
         }
         velocity.scl(1 / deltaTime);
     }
@@ -100,9 +115,10 @@ public class Dino extends Actor implements Disposable {
         } else if (state == State.JUMPING) {
             currentFrame = jumpFrame;
         } else if (state == State.LANDING) {
-            currentFrame = landFrame;
+//            currentFrame = landFrame;
         }
     }
 
+    // todo: remove landing state
     private enum State { RUNNING, JUMPING, LANDING, }
 }
