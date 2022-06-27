@@ -1,4 +1,4 @@
-package com.diyartaikenov.game;
+package com.diyartaikenov.game.screens;
 
 import static com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import static com.diyartaikenov.game.RunGame.HEIGHT;
@@ -16,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.diyartaikenov.game.RunGame;
+import com.diyartaikenov.game.screens.GameScreen;
 
 public class MainMenuScreen implements Screen {
     private final RunGame game;

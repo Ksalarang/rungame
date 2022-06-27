@@ -1,6 +1,6 @@
-package com.diyartaikenov.game;
+package com.diyartaikenov.game.actors;
 
-import static com.diyartaikenov.game.GameScreen.GROUND_HEIGHT;
+import static com.diyartaikenov.game.screens.GameScreen.GROUND_HEIGHT;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

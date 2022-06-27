@@ -1,4 +1,4 @@
-package com.diyartaikenov.game;
+package com.diyartaikenov.game.screens;
 
 import static com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import static com.diyartaikenov.game.RunGame.HEIGHT;
@@ -20,12 +20,16 @@ import com.badlogic.gdx.utils.Queue;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.diyartaikenov.game.actors.Cactus;
+import com.diyartaikenov.game.actors.Dino;
+import com.diyartaikenov.game.actors.ParallaxBackground;
+import com.diyartaikenov.game.RunGame;
 
 import java.util.Iterator;
 
 public class GameScreen implements Screen {
-    static int GROUND_HEIGHT = 180;
-    static int SECOND_IN_NANOS = 2_000_000_000;
+    public static int GROUND_HEIGHT = 180;
+    public static int SECOND_IN_NANOS = 1_000_000_000;
 
     private final RunGame game;
     private OrthographicCamera camera;

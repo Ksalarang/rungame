@@ -1,18 +1,16 @@
-package com.diyartaikenov.game;
+package com.diyartaikenov.game.screens;
 
 import static com.diyartaikenov.game.RunGame.HEIGHT;
 import static com.diyartaikenov.game.RunGame.WIDTH;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.diyartaikenov.game.actors.ParallaxBackground;
+import com.diyartaikenov.game.RunGame;
 
 public class GameOverScreen implements Screen {
     private final RunGame game;
@@ -60,7 +58,6 @@ public class GameOverScreen implements Screen {
 
     private void setupLabels(Label.LabelStyle labelStyle) {
         gameOverLabel = new Label("Game Over", labelStyle);
-        gameOverLabel.setColor(Color.BLACK);
         gameOverLabel.setPosition(
                 WIDTH / 2f - gameOverLabel.getWidth() / 2,
                 HEIGHT / 2f - gameOverLabel.getHeight() / 2

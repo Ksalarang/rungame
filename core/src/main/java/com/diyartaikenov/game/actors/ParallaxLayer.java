@@ -1,4 +1,4 @@
-package com.diyartaikenov.game;
+package com.diyartaikenov.game.actors;
 
 import static com.diyartaikenov.game.RunGame.HEIGHT;
 import static com.diyartaikenov.game.RunGame.WIDTH;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Disposable;
+import com.diyartaikenov.game.actors.ParallaxBackground;
 
 public class ParallaxLayer extends Actor implements Disposable {
     private Texture texture;
